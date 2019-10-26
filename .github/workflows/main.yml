@@ -3,6 +3,17 @@ name: Deploy to Heroku
 on: push
 
 jobs:
+	build:
+    name: Build the project
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@master
+    - uses: actions/setup-node@v1
+      with:
+        node-version: '10.x'
+    - name: Install dependencies
+      run: npm install
+
 	deploy_to_heroku:
     name: Deploy to Heroku
     runs-on: ubuntu-latest
