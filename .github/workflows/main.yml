@@ -3,10 +3,10 @@ name: Deploy to Heroku
 on: push
 
 jobs:
-	build:
-		name: Build the project
-		runs-on: ubuntu-latest
-		steps:
+  build:
+    name: Build the project
+    runs-on: ubuntu-latest
+    steps:
     - uses: actions/checkout@master
     - uses: actions/setup-node@v1
       with:
