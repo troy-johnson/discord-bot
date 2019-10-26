@@ -1,0 +1,35 @@
+name: Deploy to Heroku
+
+on: [push]
+
+jobs:
+  Login:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Login
+        uses: actions/heroku@master
+        env:
+          HEROKU_API_KEY: ${{ secrets.HEROKU_API_KEY }}
+        with: 
+          container: login
+  Push:
+    runs-on: ubuntu-latest
+    needs: Login
+    steps:
+      - name: Push
+        uses: actions/heroku@master
+        env:
+          HEROKU_API_KEY: ${{ secrets.HEROKU_API_KEY }}
+        with:
+          container: push -a tj-discord-bot web
+  Release:
+    runs-on: ubuntu-latest
+    needs: Push
+    steps:
+      - name: Release
+        uses: actions/heroku@master
+        env:
+          HEROKU_API_KEY: ${{ secrets.HEROKU_API_KEY }}
+        with:
+          container: release -a tj-discord-bot web
+    
