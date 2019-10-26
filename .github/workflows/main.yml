@@ -1,35 +1,38 @@
 name: Deploy to Heroku
 
-on: [push]
+on: push
 
 jobs:
-  Login:
+	deploy_to_heroku:
+    name: Deploy to Heroku
     runs-on: ubuntu-latest
+    needs: build
     steps:
-      - name: Login
-        uses: actions/heroku@master
-        env:
-          HEROKU_API_KEY: ${{ secrets.HEROKU_API_KEY }}
-        with: 
-          container: login
-  Push:
-    runs-on: ubuntu-latest
-    needs: Login
-    steps:
-      - name: Push
-        uses: actions/heroku@master
-        env:
-          HEROKU_API_KEY: ${{ secrets.HEROKU_API_KEY }}
-        with:
-          container: push -a tj-discord-bot web
-  Release:
-    runs-on: ubuntu-latest
-    needs: Push
-    steps:
-      - name: Release
-        uses: actions/heroku@master
-        env:
-          HEROKU_API_KEY: ${{ secrets.HEROKU_API_KEY }}
-        with:
-          container: release -a tj-discord-bot web
-    
+    - uses: actions/checkout@master
+    - name: Build docker image
+      uses: actions/docker/cli@master
+      with:
+        args: build -t $HEROKU_APP .
+      env:
+        HEROKU_APP: ${{ secrets.HEROKU_APP }}
+    - name: Login into Heroku
+      uses: actions/heroku@master
+      with:
+        args: container:login
+      env:
+        HEROKU_API_KEY: ${{ secrets.HEROKU_API_KEY }}
+        HEROKU_APP: ${{ secrets.HEROKU_APP }}
+    - name: Push to Heroku
+      uses: actions/heroku@master
+      with:
+        args: container:push web
+      env:
+        HEROKU_API_KEY: ${{ secrets.HEROKU_API_KEY }}
+        HEROKU_APP: ${{ secrets.HEROKU_APP }}
+    - name: Trigger release in Heroku
+      uses: actions/heroku@master
+      with:
+        args: container:release web
+      env:
+        HEROKU_API_KEY: ${{ secrets.HEROKU_API_KEY }}
+        HEROKU_APP: ${{ secrets.HEROKU_APP }}
