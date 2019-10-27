@@ -60,9 +60,7 @@ jobs:
       - name: Run image in Heroku dyno
         uses: actions/heroku@master
         with:
-          args: |
-            run:bash
-            run:-e $GOOGLE_API_KEY -e $DISCORD_TOKEN node .
+          args: run:web docker run -e $GOOGLE_API_KEY -e $DISCORD_TOKEN node .
         env:
           HEROKU_API_KEY: ${{ secrets.HEROKU_API_KEY }}
           HEROKU_APP: ${{ secrets.HEROKU_APP }}
