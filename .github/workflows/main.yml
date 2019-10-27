@@ -8,10 +8,28 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@master
-      - name: Build docker image
-        uses: actions/docker/cli@master
-        with:
-          args: build -t $HEROKU_APP .
+      - name: Set up Docker repository
+        run: |
+          sudo apt-get update
+          sudo apt-get install \
+            apt-transport-https \
+            ca-certificates \
+            curl \
+            gnupg-agent \
+            software-properties-common
+          curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add -
+          sudo apt-key fingerprint 0EBFCD88
+          sudo add-apt-repository \
+            "deb [arch=amd64] https://download.docker.com/linux/ubuntu \
+            $(lsb_release -cs) \
+            stable"
+      - name: Install Docker CE
+        run: |
+          sudo apt-get update
+          sudo apt-get install docker-ce docker-ce-cli containerd.io
+          sudo docker run hello-world
+      - name: Build Docker image
+        run: docker image build -t $HEROKU_APP .
         env:
           HEROKU_APP: ${{ secrets.HEROKU_APP }}
       - name: Login to Heroku
