@@ -20,14 +20,12 @@ module.exports = {
 					console.log(error);
 				}
 				else {
-					// console.log(JSON.stringify(result, null, 2));
+					// Return top 5 results to channel
 					result.items.map(item => {
 						message.reply(item.snippet.title);
 					});
 				}
 			});
-
-			// Return top 5 results to channel
 
 			// Ask user to pick the option to stream
 
