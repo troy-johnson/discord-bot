@@ -46,7 +46,7 @@ jobs:
       - name: Push image to Heroku
         uses: actions/heroku@master
         with:
-          args: container:push web --arg
+          args: container:push web
         env:
           HEROKU_API_KEY: ${{ secrets.HEROKU_API_KEY }}
           HEROKU_APP: ${{ secrets.HEROKU_APP }}
