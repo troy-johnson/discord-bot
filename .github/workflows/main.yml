@@ -46,7 +46,7 @@ jobs:
       - name: Push image to Heroku
         uses: actions/heroku@master
         with:
-          args: container:push web --arg GOOGLE_API_KEY=${{ secrets.GOOGLE_API_KEY}},DISCORD_TOKEN=${{ secrets.DISCORD_TOKEN }}
+          args: container:push worker --arg GOOGLE_API_KEY=${{ secrets.GOOGLE_API_KEY}},DISCORD_TOKEN=${{ secrets.DISCORD_TOKEN }}
         env:
           HEROKU_API_KEY: ${{ secrets.HEROKU_API_KEY }}
           HEROKU_APP: ${{ secrets.HEROKU_APP }}
@@ -55,7 +55,7 @@ jobs:
       - name: Release image to Heroku dyno
         uses: actions/heroku@master
         with:
-          args: container:release web
+          args: container:release worker
         env:
           HEROKU_API_KEY: ${{ secrets.HEROKU_API_KEY }}
           HEROKU_APP: ${{ secrets.HEROKU_APP }}
@@ -71,14 +71,14 @@ jobs:
       - name: Run image in Heroku dyno
         uses: actions/heroku@master
         with:
-          args: container:run web -a $HEROKU_APP
+          args: container:run worker -a $HEROKU_APP
         env:
           HEROKU_API_KEY: ${{ secrets.HEROKU_API_KEY }}
           HEROKU_APP: ${{ secrets.HEROKU_APP }}
       # - name: Run image in Heroku dyno
       #   uses: actions/heroku@master
       #   with:
-      #     args: run:web docker run -e $GOOGLE_API_KEY -e $DISCORD_TOKEN node .
+      #     args: run:worker docker run -e $GOOGLE_API_KEY -e $DISCORD_TOKEN node .
       #   env:
       #     HEROKU_API_KEY: ${{ secrets.HEROKU_API_KEY }}
       #     HEROKU_APP: ${{ secrets.HEROKU_APP }}
