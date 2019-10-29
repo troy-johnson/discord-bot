@@ -69,7 +69,7 @@ jobs:
       - name: Run image in Heroku dyno
         uses: actions/heroku@master
         with:
-          args: container:run web
+          args: container:run -a $HEROKU_APP web
         # env:
         #   HEROKU_API_KEY: ${{ secrets.HEROKU_API_KEY }}
         #   HEROKU_APP: ${{ secrets.HEROKU_APP }}
