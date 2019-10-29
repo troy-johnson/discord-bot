@@ -46,12 +46,13 @@ jobs:
       - name: Push image to Heroku
         uses: actions/heroku@master
         with:
-          args: container:push worker --arg GOOGLE_API_KEY=${{ secrets.GOOGLE_API_KEY}},DISCORD_TOKEN=${{ secrets.DISCORD_TOKEN }}
+          args: container:push worker --arg GOOGLE_API_KEY=${{ secrets.GOOGLE_API_KEY}},DISCORD_TOKEN=${{ secrets.DISCORD_TOKEN }},PREFIX=${{ secrets.PREFIX }}
         env:
           HEROKU_API_KEY: ${{ secrets.HEROKU_API_KEY }}
           HEROKU_APP: ${{ secrets.HEROKU_APP }}
           GOOGLE_API_KEY: ${{ secrets.GOOGLE_API_KEY }}
           DISCORD_TOKEN: ${{ secrets.DISCORD_TOKEN }}
+          PREFIX: ${{ secrets.PREFIX }}
       - name: Release image to Heroku dyno
         uses: actions/heroku@master
         with:
