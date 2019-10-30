@@ -22,13 +22,10 @@ jobs:
       - name: Push image to Heroku
         uses: actions/heroku@master
         with:
-          args: container:push worker --arg GOOGLE_API_KEY=${{ secrets.GOOGLE_API_KEY}},DISCORD_TOKEN=${{ secrets.DISCORD_TOKEN }},PREFIX=${{ secrets.PREFIX }}
+          args: container:push worker
         env:
           HEROKU_API_KEY: ${{ secrets.HEROKU_API_KEY }}
           HEROKU_APP: ${{ secrets.HEROKU_APP }}
-          GOOGLE_API_KEY: ${{ secrets.GOOGLE_API_KEY }}
-          DISCORD_TOKEN: ${{ secrets.DISCORD_TOKEN }}
-          PREFIX: ${{ secrets.PREFIX }}
       - name: Release image to Heroku dyno
         uses: actions/heroku@master
         with:
@@ -36,15 +33,16 @@ jobs:
         env:
           HEROKU_API_KEY: ${{ secrets.HEROKU_API_KEY }}
           HEROKU_APP: ${{ secrets.HEROKU_APP }}
-      # - name: Set environment variables
-      #   uses: actions/heroku@master
-      #   with:
-      #     args: config:set GOOGLE_API_KEY=${{ secrets.GOOGLE_API_KEY}} DISCORD_TOKEN=${{ secrets.DISCORD_TOKEN }}
-      #   env:
-      #     HEROKU_API_KEY: ${{ secrets.HEROKU_API_KEY }}
-      #     HEROKU_APP: ${{ secrets.HEROKU_APP }}
-      #     GOOGLE_API_KEY: ${{ secrets.GOOGLE_API_KEY }}
-      #     DISCORD_TOKEN: ${{ secrets.DISCORD_TOKEN }}
+      - name: Set environment variables
+        uses: actions/heroku@master
+        with:
+          args: config:set GOOGLE_API_KEY=$GOOGLE_API_KEY DISCORD_TOKEN=$DISCORD_TOKEN PREFIX=$PREFIX
+        env:
+          HEROKU_API_KEY: ${{ secrets.HEROKU_API_KEY }}
+          HEROKU_APP: ${{ secrets.HEROKU_APP }}
+          GOOGLE_API_KEY: ${{ secrets.GOOGLE_API_KEY }}
+          DISCORD_TOKEN: ${{ secrets.DISCORD_TOKEN }}
+          PREFIX: ${{ secrets.prefix }}
       - name: Run image in Heroku dyno
         uses: actions/heroku@master
         with:
@@ -52,12 +50,3 @@ jobs:
         env:
           HEROKU_API_KEY: ${{ secrets.HEROKU_API_KEY }}
           HEROKU_APP: ${{ secrets.HEROKU_APP }}
-      # - name: Run image in Heroku dyno
-      #   uses: actions/heroku@master
-      #   with:
-      #     args: run:worker docker run -e $GOOGLE_API_KEY -e $DISCORD_TOKEN node .
-      #   env:
-      #     HEROKU_API_KEY: ${{ secrets.HEROKU_API_KEY }}
-      #     HEROKU_APP: ${{ secrets.HEROKU_APP }}
-      #     GOOGLE_API_KEY: ${{ secrets.GOOGLE_API_KEY }}
-      #     DISCORD_TOKEN: ${{ secrets.DISCORD_TOKEN }}
