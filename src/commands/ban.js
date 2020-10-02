@@ -26,7 +26,7 @@ module.exports = {
 		})
 		.catch((err) => {
 			console.error(err);
-			message.channel.send(`Failed to banned: ${err}`);
+			message.channel.send(`Failed to ban: ${err}`);
 		})
 	},
 };
