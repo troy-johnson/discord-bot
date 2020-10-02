@@ -5,12 +5,15 @@ const { prefix, discordToken } = require('./config');
 const client = new Discord.Client();
 client.commands = new Discord.Collection();
 
-const commandFiles = fs.readdirSync('./src/commands').filter(file => file.endsWith('.js'));
+const commandFiles = fs
+	.readdirSync('./src/commands')
+	.filter((file) => file.endsWith('.js'));
 
 for (const file of commandFiles) {
 	const command = require(`./src/commands/${file}`);
 	client.commands.set(command.name, command);
 }
+
 
 const cooldowns = new Discord.Collection();
 
@@ -18,16 +21,19 @@ client.once('ready', () => {
 	console.log('Ready!');
 });
 
-client.on('message', message => {
+client.on('message', (message) => {
 	if (!message.content.startsWith(prefix) || message.author.bot) return;
 
 	console.log('message', message.content);
 
 	const args = message.content.slice(prefix.length).split(/ +/);
-	const commandName = args.shift().toLowerCase();
+	const commandName = args.shift();
 
-	const command = client.commands.get(commandName)
-		|| client.commands.find(cmd => cmd.aliases && cmd.aliases.includes(commandName));
+	const command =
+		client.commands.get(commandName) ||
+		client.commands.find(
+			(cmd) => cmd.aliases && cmd.aliases.includes(commandName)
+		);
 
 	if (!command) return;
 
@@ -58,7 +64,11 @@ client.on('message', message => {
 
 		if (now < expirationTime) {
 			const timeLeft = (expirationTime - now) / 1000;
-			return message.reply(`please wait ${timeLeft.toFixed(1)} more second(s) before reusing the \`${command.name}\` command.`);
+			return message.reply(
+				`please wait ${timeLeft.toFixed(
+					1
+				)} more second(s) before reusing the \`${command.name}\` command.`
+			);
 		}
 	}
 
@@ -66,7 +76,6 @@ client.on('message', message => {
 	setTimeout(() => timestamps.delete(message.author.id), cooldownAmount);
 
 	try {
-
 		command.execute(message, args);
 	}
 	catch (error) {
