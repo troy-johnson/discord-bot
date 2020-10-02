@@ -76,7 +76,7 @@ client.on('message', (message) => {
 	setTimeout(() => timestamps.delete(message.author.id), cooldownAmount);
 
 	try {
-		command.execute(message, args);
+		command.execute(message, client);
 	}
 	catch (error) {
 		console.error(error);
