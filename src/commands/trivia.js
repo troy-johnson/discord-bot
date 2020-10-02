@@ -10,27 +10,35 @@ module.exports = {
 	description: 'Start a trivia for users of the server',
 	aliases: ['trivia', 'quiz'],
 	async execute(message, client) {
-		console.log(message.content.slice(prefix.length));
+		// If this command was called
 		if (message.content.slice(prefix.length) === this.name) {
+			let questionSent = false;
+			// Call API, startTyping() to indicate ongoing task
+			message.channel.startTyping();
 			const resp = await fetch(TRIVIA_URL);
 			if (resp.ok) {
 				const data = await resp.json();
 				// Send the question
-				const question = ` Here's your trivia question:\n\n${data['results'][0]['question']}\n\n(True/False)`;
+				const question = `Here is your trivia question:\n\n${data['results'][0]['question']}\n\n(True/False)`;
 				const correctAnswer = data['results'][0]['correct_answer'];
-				message.channel.send(question);
+				message.channel.stopTyping(true);
+				if (!questionSent) {
+					message.channel.send(question);
+					questionSent = true;
+				}
 				client.on('message', msg => {
 					if (msg.content.slice(prefix.length) !== this.name) {
 						if (msg.isMentioned(client.user)) {
 							const ans = msg.content.split(' ')[1];
-							console.log(ans);
+							// console.log(ans);
+							const target = msg.author;
+							// console.log(target);
 							if (ans === correctAnswer) {
-								// const target = msg.mentions.members.first();
-								// msg.channel.send(`<@${target.user.id}>Correct answer!`);
-								msg.channel.send('Correct answer!');
+								msg.channel.send(`${target} Correct answer!`);
+								// msg.channel.send('Correct answer!');
 							}
 							else {
-								msg.channel.send('Wrong answer!');
+								msg.channel.send(`${target} Wrong answer!`);
 							}
 						}
 					}
