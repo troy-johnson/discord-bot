@@ -10,6 +10,12 @@
 
 > A multi-purpose Discord bot designed to enhance your discord server.
 
+[https://lucid.app/invitations/accept/50224186-b639-4a9e-b238-87a2757492a3](https://lucid.app/invitations/accept/50224186-b639-4a9e-b238-87a2757492a3)
+
+
+
+https://lucid.app/invitations/accept/50224186-b639-4a9e-b238-87a2757492a3
+
 ## ❓ what is it?
 
 It is a multi-purpose Discord bot designed to enhance your discord server.
