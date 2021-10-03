@@ -9,6 +9,7 @@
 </p>
 
 > A multi-purpose Discord bot designed to enhance your discord server.
+https://lucid.app/documents/view/489f3262-7e1c-4f63-ae55-44901faf11f1
 
 ## ❓ what is it?
 
